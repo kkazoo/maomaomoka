@@ -1,0 +1,171 @@
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sparkles, Github, Mail, Music, Code, BookOpen, Brain } from "lucide-react";
+import { useEffect, useState } from "react";
+
+function GlitterBackground() {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    const generated = Array.from({ length: 35 }).map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      size: Math.random() * 6 + 3,
+      duration: Math.random() * 10 + 14,
+      delay: Math.random() * 6,
+    }));
+    setParticles(generated);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ y: "110vh", opacity: 0 }}
+          animate={{ y: "-10vh", opacity: [0, 1, 0] }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            delay: p.delay,
+            ease: "linear",
+          }}
+          style={{ left: `${p.left}%` }}
+          className="absolute"
+        >
+          <Sparkles
+            style={{ width: p.size, height: p.size }}
+            className="text-pink-300"
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+export default function PersonalPage() {
+  return (
+    <div className="relative min-h-screen bg-gradient-to-br from-pink-100 via-fuchsia-100 to-purple-100 text-slate-800 p-6 overflow-hidden">
+      <GlitterBackground />
+
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 text-center mt-20"
+      >
+        <h1 className="text-6xl font-black tracking-tight mb-4 bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+          maomaomoka
+        </h1>
+        <p className="text-lg max-w-2xl mx-auto opacity-80">
+          student · developer · biology enthusiast · dreamy k‑pop energy
+        </p>
+
+        <div className="mt-3 text-sm tracking-widest uppercase text-pink-400">
+          ✧ soft code · bright mind · pastel future ✧
+        </div>
+
+        <div className="mt-8 flex justify-center gap-4 flex-wrap">
+          <Button className="rounded-full shadow-xl bg-gradient-to-r from-pink-400 to-purple-400 text-white hover:scale-105 transition">
+            <Github className="mr-2 h-4 w-4" /> GitHub
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full shadow-xl border-pink-300 text-pink-600 hover:bg-pink-50"
+          >
+            <Mail className="mr-2 h-4 w-4" /> Contact
+          </Button>
+        </div>
+      </motion.div>
+
+      {/* About */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative z-10 mt-24 max-w-4xl mx-auto"
+      >
+        <Card className="rounded-3xl shadow-2xl backdrop-blur bg-white/80 border border-pink-200">
+          <CardContent className="p-10">
+            <h2 className="text-3xl font-bold mb-6 text-pink-500">About Me</h2>
+            <p className="leading-relaxed text-lg">
+              I'm a student who likes blending science and aesthetics. I’m
+              especially into biology and neuroscience, but I also love building
+              clean, pastel‑themed web apps. Outside of academics, I keep up with
+              K‑pop, read webtoons, and dive into character‑driven books.
+              
+              I enjoy projects that feel intentional — visually soft, but
+              logically strong.
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Interests */}
+      <div className="relative z-10 mt-20 max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: <Brain className="h-6 w-6 text-pink-400" />,
+            title: "Biology",
+            desc: "Neuroscience, research, cellular systems, scientific thinking.",
+          },
+          {
+            icon: <Code className="h-6 w-6 text-purple-400" />,
+            title: "Web Development",
+            desc: "React, UI/UX design, aesthetic interfaces.",
+          },
+          {
+            icon: <BookOpen className="h-6 w-6 text-fuchsia-400" />,
+            title: "Books & Webtoons",
+            desc: "Character‑driven stories, coming‑of‑age themes, inspiration.",
+          },
+        ].map((item, index) => (
+          <motion.div
+            key={index}
+            whileHover={{ scale: 1.06, y: -5 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          >
+            <Card className="rounded-3xl shadow-xl bg-white/90 border border-pink-100 hover:shadow-2xl transition">
+              <CardContent className="p-8">
+                <div className="mb-4">{item.icon}</div>
+                <h3 className="text-2xl font-semibold mb-2">
+                  {item.title}
+                </h3>
+                <p className="opacity-80">{item.desc}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Music */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 mt-24 max-w-xl mx-auto"
+      >
+        <Card className="rounded-3xl shadow-2xl bg-gradient-to-r from-pink-300 via-fuchsia-300 to-purple-300 text-white">
+          <CardContent className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+              <Music className="h-5 w-5" /> Now Playing
+            </h2>
+            <p className="text-sm mb-4 opacity-90">
+              coding playlist · soft pop · late night study vibes
+            </p>
+            <audio controls className="w-full rounded-xl">
+              <source src="/music.mp3" type="audio/mpeg" />
+            </audio>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Footer */}
+      <footer className="relative z-10 mt-28 text-center text-sm text-pink-400">
+        © 2026 maomaomoka · pastel logic + pop energy
+      </footer>
+    </div>
+  );
+}
